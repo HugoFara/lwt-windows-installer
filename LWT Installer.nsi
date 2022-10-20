@@ -23,7 +23,7 @@ ShowInstDetails show
 
 !define MUI_COMPONENTSPAGE_SMALLDESC
 !insertmacro MUI_PAGE_COMPONENTS
-!insertmacro MUI_PAGE_INSTFILES
+;!insertmacro MUI_PAGE_INSTFILES
 
 !insertmacro MUI_LANGUAGE English
 
@@ -35,7 +35,6 @@ ShowInstDetails show
 ;SetBrandingImage favicon.bmp
 
 ${StrRep}
-
 
 ;Function customPage
 ;  GetTempFileName $R0
@@ -123,27 +122,32 @@ Section "LWT from GitHub" LWT_GITHUB
     Abort
     dlok:
       MessageBox MB_OK "LWT download success!"
+      nsUnzip::Extract "lwt.zip" /END
+      Pop $0
+      DetailPrint "LWT zip file extracted successfully!"
 
 SectionEnd
 
 Section /o "MeCab (Japanese Parser)" MECAB
   AddSize 11060
-  DetailPrint "Downloading MeCab..."
+  ExecShell "" "https://sourceforge.net/projects/mecab/files/latest/download"
+  DetailPrint "Opened MeCab in new window..."
   ; Try also https://sourceforge.net/projects/mecab/files/latest/download
-  inetc::get \
-  "https://sourceforge.net/projects/mecab/files/mecab-win32/0.98/mecab-0.98.exe" \
-  "mecab.txt" /END
-    Pop $0 # return value = exit code, "OK" if OK
-    DetailPrint "Status $0"
-    StrCmp $0 "OK" dlok
-    Abort
-    dlok:
-      DetailPrint "MeCab download success"
-
+  ;inetc::get \
+  ;"https://sourceforge.net/projects/mecab/files/mecab-win32/0.98/mecab-0.98.exe" \
+  ;"mecab.txt" /END
+  ;  Pop $0 # return value = exit code, "OK" if OK
+  ;  DetailPrint "Status $0"
+  ;  StrCmp $0 "OK" dlok
+  ;  Abort
+  ;  dlok:
+  ;    DetailPrint "MeCab download success"
 SectionEnd
 
 Section "XAMPP" XAMPP
-
+  AddSize 150528
+  ExecShell "" "https://www.apachefriends.org/download.html"
+  DetailPrint "Opened XAMPP in new window..."
 SectionEnd
 
 ; Add translations
